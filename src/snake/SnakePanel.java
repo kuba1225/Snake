@@ -32,10 +32,6 @@ public class SnakePanel extends JPanel implements ActionListener {
         timer.start();
 
     }
-    SnakeLogic logic = new SnakeLogic();
-    private Timer timer;
-
-    private Color snakeColor = Color.black;
 
     private void drawFruit() {
         panelTable[logic.getFruitPosition().getR()][logic.getFruitPosition().getC()].setBackground(Color.red);
@@ -43,7 +39,6 @@ public class SnakePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //System.out.println("test");
         logic.updatePosition();
         repaintBackground();
         drawSnake();
@@ -92,8 +87,6 @@ public class SnakePanel extends JPanel implements ActionListener {
             panelTable[r][c].setBackground(snakeColor);
         }
     }
-
-   
 
     private void initPanels() {
         panelTable = new JPanel[14][12];
@@ -2818,5 +2811,8 @@ public class SnakePanel extends JPanel implements ActionListener {
     private javax.swing.JPanel jPanel99;
     // End of variables declaration//GEN-END:variables
     private JPanel panelTable[][];
+    SnakeLogic logic = new SnakeLogic();
+    private Timer timer;
+    private Color snakeColor = Color.black;
 
 }

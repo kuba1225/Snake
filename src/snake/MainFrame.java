@@ -19,7 +19,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     
     static JFrame frame = new JFrame("Snake");
-    private SnakePanel paint = new SnakePanel();
+    private SnakePanel2 paint = new SnakePanel2();
     
     public JFrame getFrame(){
         return frame;
