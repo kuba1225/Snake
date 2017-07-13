@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snaketest;
+package snake;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import static snaketest.MainFrame.frame;
+import static snake.MainFrame.frame;
 
 /**
  *
