@@ -10,9 +10,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import static snake.MainFrame.frame;
@@ -21,7 +18,7 @@ import static snake.MainFrame.frame;
  *
  * @author Kuba
  */
-public class SnakePanel extends JPanel implements KeyListener, ActionListener {
+public class SnakePanel extends JPanel implements ActionListener {
 
     /**
      * Creates new form SnakePanel
@@ -29,132 +26,33 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     public SnakePanel() {
         initComponents();
         initPanels();
-        initSnake();
-        frame.addKeyListener(this);
+        logic.initSnake();
+        frame.addKeyListener(logic);
         timer = new Timer(350, this);
         timer.start();
-        
 
     }
+    SnakeLogic logic = new SnakeLogic();
     private Timer timer;
-    private Snake snake;
-    private int points = 0;
-    boolean ate = true;
-    private int move = 2;
-    private Random rand = new Random();
-    private Position head = new Position(3, 6);
-    private boolean gameOver = false;
 
-    private Position fruitPosition = null;
     private Color snakeColor = Color.black;
 
-    private void updatePosition() {
-        int hr = snake.getPosition().get(0).getR();
-        int hc = snake.getPosition().get(0).getC();
-
-        int tr = snake.getPosition().get(snake.length - 1).getR();
-        int tc = snake.getPosition().get(snake.length - 1).getC();
-
-        switch (move) {
-            case 0:
-                hr--;
-                break;
-            case 1:
-                hc++;
-                break;
-            case 2:
-                hr++;
-                break;
-            case 3:
-                hc--;
-                break;
-        }
-
-        if (hr >= 0 && hr < 14 && hc >= 0 && hc < 12) {
-
-            for (int i = snake.length - 1; i > 0; i--) {
-                snake.getPosition().get(i).setR(snake.getPosition().get(i - 1).getR());
-                snake.getPosition().get(i).setC(snake.getPosition().get(i - 1).getC());
-            }
-
-            snake.getPosition().get(0).setR(hr);
-            snake.getPosition().get(0).setC(hc);
-
-            Position tmp2 = new Position(hr, hc);
-
-            if (tmp2.equals(fruitPosition)) {
-                Position tmp = new Position(tr, tc);
-                snake.getPosition().add(tmp);
-                points += 10;
-                snake.length++;
-                ate = true;
-            }
-
-        } else {
-            gameOver = true;
-
-        }
-    }
-
-    private void generateFruit() {
-        int r = rand.nextInt(14);
-        int c = rand.nextInt(12);
-
-        Position tmp = new Position(r, c);
-
-        for (int i = 0; i < snake.getLength(); i++) {
-            if (tmp.equals(snake.getPosition().get(i))) {
-                i = 0;
-                r = rand.nextInt(14);
-                c = rand.nextInt(12);
-                tmp.setR(r);
-                tmp.setC(c);
-            }
-        }
-
-        fruitPosition = tmp;
-    }
-
     private void drawFruit() {
-        panelTable[fruitPosition.getR()][fruitPosition.getC()].setBackground(Color.red);
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        //
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_UP:
-                move = 0;
-                break;
-            case KeyEvent.VK_DOWN:
-                move = 2;
-                break;
-            case KeyEvent.VK_LEFT:
-                move = 3;
-                break;
-            case KeyEvent.VK_RIGHT:
-                move = 1;
-                break;
-        }
+        panelTable[logic.getFruitPosition().getR()][logic.getFruitPosition().getC()].setBackground(Color.red);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //System.out.println("test");
-        updatePosition();
+        logic.updatePosition();
         repaintBackground();
         drawSnake();
 
-        if (ate) {
-            generateFruit();
-            ate = false;
+        if (logic.isAte()) {
+            logic.generateFruit();
+            logic.setAte(false);
         }
-        if (gameOver) {
+        if (logic.isGameOver()) {
 
             repaint();
         }
@@ -163,17 +61,17 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void paint(Graphics g) {
-        if (gameOver) {
-
+        if (logic.isGameOver()) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, 900, 900);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
             g.setColor(Color.BLACK);
             g.drawString("GAME OVER!!!", 180, 180);
-            snake.length = 0;
-            snake.getPosition().clear();
-            initSnake();
-            gameOver = false;
+            logic.getSnake().length = 0;
+            logic.getSnake().getPosition().clear();
+            logic.initSnake();
+            logic.setGameOver(false);
+            logic.setPoints(0);
         }
     }
 
@@ -188,26 +86,14 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
     private void drawSnake() {
         int r;
         int c;
-        //System.out.println("..............");
-        for (int i = 0; i < snake.length; i++) {
-            r = snake.getPosition().get(i).getR();
-            c = snake.getPosition().get(i).getC();
-
-            //System.out.println(r+"  "+c);
+        for (int i = 0; i < logic.getSnake().length; i++) {
+            r = logic.getSnake().getPosition().get(i).getR();
+            c = logic.getSnake().getPosition().get(i).getC();
             panelTable[r][c].setBackground(snakeColor);
         }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        //
-    }
-
-    private void initSnake() {
-        snake = new Snake();
-        snake.getPosition().add(head);
-        snake.length++;
-    }
+   
 
     private void initPanels() {
         panelTable = new JPanel[14][12];
