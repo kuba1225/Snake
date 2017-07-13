@@ -33,6 +33,7 @@ public class SnakePanel extends JPanel implements KeyListener, ActionListener {
         frame.addKeyListener(this);
         timer = new Timer(350, this);
         timer.start();
+        
 
     }
     private Timer timer;
