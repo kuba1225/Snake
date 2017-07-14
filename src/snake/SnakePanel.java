@@ -32,7 +32,7 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
     }
 
     SnakeLogic logic = new SnakeLogic();
-    private Timer timer;
+    static Timer timer;
     private Color snakeColor = Color.black;
     private Color backgroundColor = Color.white;
     private Color fruitColor = Color.red;
@@ -84,25 +84,36 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
             logic.generateFruit();
             logic.setAte(false);
         }
+
         drawFruit(g2d);
+
         if (logic.isGameOver()) {
-            g.setColor(Color.WHITE);
-            g.fillRect(0, 0, 600, 700);
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-            g.setColor(Color.BLACK);
-            g.drawString("GAME OVER!!!", 180, 180);
-            logic.getSnake().length = 0;
-            logic.getSnake().getPosition().clear();
-            logic.initSnake();
-            logic.setGameOver(false);
-            logic.setPoints(0);
+            gameOver(g);
         }
 
     }
 
+    private void gameOver(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 600, 700);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        g.setColor(Color.BLACK);
+        g.drawString("   GAME OVER!!!", 130, 180);
+        g.drawString("Zdobyłeś "+logic.getPoints()+" punktów!", 130, 280);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("Kliknij ,,enter'' aby ", 130, 480);
+        g.drawString("rozpocząć od nowa", 130, 530);
+        logic.getSnake().length = 0;
+        logic.getSnake().getPosition().clear();
+        logic.initSnake();
+        logic.setGameOver(false);
+        logic.setPoints(0);
+        timer.stop();
+    }
+
     private void repaintBackground(Graphics2D g2d) {
         g2d.setColor(backgroundColor);
-        g2d.fillRect(0, 0, 600, 700);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 
     private void drawSnake(Graphics2D g2d) {
@@ -113,7 +124,6 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
             r = logic.getSnake().getPosition().get(i).getR();
             c = logic.getSnake().getPosition().get(i).getC();
             g2d.fillRect(c * SIZE, r * SIZE, SIZE - 2, SIZE - 2);
-            //panelTable[r][c].setBackground(snakeColor);
         }
     }
 

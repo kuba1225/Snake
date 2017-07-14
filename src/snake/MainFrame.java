@@ -16,21 +16,9 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    
-    
     static JFrame frame = new JFrame("Snake");
     private SnakePanel paint = new SnakePanel();
-    
-    public JFrame getFrame(){
-        return frame;
-    }
-    
-    public void setFrame(JFrame frame){
-        this.frame = frame;
-    }
-       
-    
-    
+
     public MainFrame() {
         initComponents();
         frame.add(paint);

@@ -10,6 +10,7 @@ package snake;
  * @author Kuba
  */
 public class Position {
+
     private int r;
     private int c;
 
@@ -63,6 +64,5 @@ public class Position {
         }
         return true;
     }
-    
-    
+
 }

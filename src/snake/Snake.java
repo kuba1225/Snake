@@ -13,9 +13,9 @@ import java.util.List;
  * @author Kuba
  */
 public class Snake {
-    
+
     private List<Position> position = new ArrayList<Position>();
-    public int length=0;
+    public int length = 0;
 
     public Snake() {
     }
@@ -36,11 +36,4 @@ public class Snake {
         this.length = length;
     }
 
-    
-
-    
-    
-    
-    
-    
 }

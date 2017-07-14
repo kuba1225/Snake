@@ -8,6 +8,7 @@ package snake;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+import static snake.SnakePanel.timer;
 
 /**
  *
@@ -20,13 +21,15 @@ public class SnakeLogic implements KeyListener {
     private int move = 2;
     private boolean ate = true;
     private boolean gameOver = false;
-    private Position head = new Position(3, 6);
+
     private Position fruitPosition = null;
     private Random rand = new Random();
 
     public void initSnake() {
         snake = new Snake();
+        Position head = new Position(3, 6);
         snake.getPosition().add(head);
+        move = 2;
         snake.length++;
     }
 
@@ -103,7 +106,13 @@ public class SnakeLogic implements KeyListener {
                 break;
         }
 
-        if (hr >= 0 && hr < 14 && hc >= 0 && hc < 12) {
+        for (int j = 0; j < snake.length; j++) {
+            if ((snake.getPosition().get(j).getR() == hr) && (snake.getPosition().get(j).getC() == hc)) {
+                gameOver = true;
+            }
+        }
+
+        if (hr >= 0 && hr < 14 && hc >= 0 && hc < 12 && !gameOver) {
 
             for (int i = snake.length - 1; i > 0; i--) {
                 snake.getPosition().get(i).setR(snake.getPosition().get(i - 1).getR());
@@ -149,6 +158,9 @@ public class SnakeLogic implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 move = 1;
+                break;
+            case KeyEvent.VK_ENTER:
+                timer.start();
                 break;
         }
     }
