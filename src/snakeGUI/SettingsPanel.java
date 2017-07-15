@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeGUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static snake.MainFrame.frame;
-import static snake.MenuPanel.levelMP;
-import static snake.MenuPanel.snakeColorMP;
+import static snakeGUI.MainFrame.frame;
+import static snakeGUI.MenuPanel.levelMP;
+import static snakeGUI.MenuPanel.snakeColorMP;
 
 /**
  *
@@ -25,6 +25,11 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
      */
     public SettingsPanel() {
         initComponents();
+        setPanelsOpaque();
+        tools = new GraphicsTools();
+    }
+
+    private void setPanelsOpaque() {
         TitlePanel.setOpaque(false);
         ContainPanel.setOpaque(false);
         ButtonPanel.setOpaque(false);
@@ -37,6 +42,12 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
         ButtonLevelPanel.setOpaque(false);
     }
 
+    private int level = 1;
+    private int timerDelay = 350;
+    private GraphicsTools tools;
+    private Color linesColor = Color.white;
+    private Color snakeColor = Color.black;
+
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
@@ -46,14 +57,8 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-        drawLines(g2d);
+        tools.drawLines(g2d, linesColor);
     }
-
-    private Color linesColor = Color.white;
-    private Color snakeColor = Color.black;
-    private final int SIZE = 50;
-    private int level = 1;
-    private int timerDelay = 350;
 
     public int getTimerDelay() {
         return timerDelay;
@@ -141,7 +146,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
             .addGroup(LevelTitlePanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         ContainPanel.add(LevelTitlePanel);
@@ -195,7 +200,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
             .addGroup(LevelPanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(ButtonLevelPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         ContainPanel.add(LevelPanel);
@@ -218,7 +223,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
             .addGroup(SnakeColorTitlePanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         ContainPanel.add(SnakeColorTitlePanel);
@@ -278,7 +283,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
             SnakeColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SnakeColorPanelLayout.createSequentialGroup()
                 .addComponent(ColorButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 67, Short.MAX_VALUE))
+                .addGap(0, 68, Short.MAX_VALUE))
         );
 
         ContainPanel.add(SnakeColorPanel);
@@ -319,7 +324,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
         ButtonPanelLayout.setVerticalGroup(
             ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addComponent(ButtonContain, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -338,7 +343,7 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
             .addGroup(layout.createSequentialGroup()
                 .addComponent(TitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ContainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ContainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -388,15 +393,6 @@ public class SettingsPanel extends javax.swing.JPanel implements ActionListener 
         snakeColor = Color.blue;
     }//GEN-LAST:event_BlueColorButtonActionPerformed
 
-    private void drawLines(Graphics2D g2d) {
-        g2d.setColor(linesColor);
-        for (int i = 0; i < 13; i++) {
-            g2d.drawLine(i * SIZE, 0, i * SIZE, 700);
-        }
-        for (int i = 0; i < 15; i++) {
-            g2d.drawLine(0, i * SIZE, 600, i * SIZE);
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BlackColorButton;

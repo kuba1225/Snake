@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeGUI;
 
+import snakeLogic.PointsComparator;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,8 +22,8 @@ import java.util.List;
 import java.util.Scanner;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
-import snake.HighScoresPanel.User;
-import static snake.MainFrame.frame;
+import snakeLogic.User;
+import static snakeGUI.MainFrame.frame;
 
 /**
  *
@@ -35,59 +36,25 @@ public class HighScoresPanel extends javax.swing.JPanel implements ActionListene
      */
     public HighScoresPanel() {
         initComponents();
-        ButtonContainPanel.setOpaque(false);
-        ButtonPanel.setOpaque(false);
-        TitlePanel.setOpaque(false);
-        ListContainPanel.setOpaque(false);
+        setPanelsOpaque();
+        tools = new GraphicsTools();
         userScores = new ArrayList<User>();
         try {
             readFromFile();
         } catch (IOException ex) {
             System.out.println(ex + "Nieudana próba odczytu pliku.");
         }
-
     }
 
-    List<User> userScores;
+    private List<User> userScores;
+    private GraphicsTools tools;
+    private Color linesColor = Color.white;
 
-    class User {
-
-        String userName;
-        int points;
-
-        public User() {
-
-        }
-
-        public User(String userName, int points) {
-            this.userName = userName;
-            this.points = points;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            return hash;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final User other = (User) obj;
-            if (this.points != other.points) {
-                return false;
-            }
-            return true;
-        }
-
+    private void setPanelsOpaque() {
+        ButtonContainPanel.setOpaque(false);
+        ButtonPanel.setOpaque(false);
+        TitlePanel.setOpaque(false);
+        ListContainPanel.setOpaque(false);
     }
 
     @Override
@@ -99,8 +66,7 @@ public class HighScoresPanel extends javax.swing.JPanel implements ActionListene
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-        drawLines(g2d);
-
+        tools.drawLines(g2d, linesColor);
     }
 
     public void readFromFile() throws IOException {
@@ -108,13 +74,19 @@ public class HighScoresPanel extends javax.swing.JPanel implements ActionListene
         int licznik = 1;
         Scanner file = null;
         String line;
+        String name;
+        int points;
 
         try {
             file = new Scanner(new BufferedReader(new FileReader("HighScores.txt")));
 
             while (file.hasNext()) {
-
-                userScores.add(new User(file.next(), file.nextInt()));
+                name = file.next();
+                while (!file.hasNextInt()) {
+                    name += (" " + file.next());
+                }
+                points = file.nextInt();
+                userScores.add(new User(name, points));
 
                 licznik++;
             }
@@ -122,7 +94,7 @@ public class HighScoresPanel extends javax.swing.JPanel implements ActionListene
             Collections.sort(userScores, new PointsComparator());
 
             for (int i = 0; i < licznik - 1; i++) {
-                line = (i + 1) + ".  " + userScores.get(i).userName + "     " + userScores.get(i).points + " PKT";
+                line = (i + 1) + ".  " + userScores.get(i).getUserName() + "     " + userScores.get(i).getPoints() + " PKT";
                 listModel.addElement(line);
             }
             HighScoresList.setModel(listModel);
@@ -130,19 +102,6 @@ public class HighScoresPanel extends javax.swing.JPanel implements ActionListene
             if (file != null) {
                 file.close();
             }
-        }
-    }
-
-    private Color linesColor = Color.white;
-    private final int SIZE = 50;
-
-    private void drawLines(Graphics2D g2d) {
-        g2d.setColor(linesColor);
-        for (int i = 0; i < 13; i++) {
-            g2d.drawLine(i * SIZE, 0, i * SIZE, 700);
-        }
-        for (int i = 0; i < 15; i++) {
-            g2d.drawLine(0, i * SIZE, 600, i * SIZE);
         }
     }
 

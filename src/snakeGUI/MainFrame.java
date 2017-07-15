@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeGUI;
 
 import javax.swing.JFrame;
 
@@ -17,7 +17,6 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     static JFrame frame = new JFrame("Snake");
-
     private MenuPanel menu = new MenuPanel();
 
     public MainFrame() {

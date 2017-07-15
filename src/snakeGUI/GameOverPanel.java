@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeGUI;
 
+import snakeLogic.SnakeLogic;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,11 +15,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import static snake.MainFrame.frame;
-import static snake.MenuPanel.levelMP;
-import static snake.MenuPanel.snakeColorMP;
-import static snake.MenuPanel.timerDelay;
-import static snake.SnakePanel.timer;
+import static snakeGUI.MainFrame.frame;
+import static snakeGUI.MenuPanel.levelMP;
+import static snakeGUI.MenuPanel.snakeColorMP;
+import static snakeGUI.MenuPanel.timerDelay;
+import static snakeGUI.SnakePanel.timer;
 
 /**
  *
@@ -31,14 +32,35 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
      */
     public GameOverPanel() {
         initComponents();
-
-        ButtonPanel.setOpaque(false);
-        ButtonContainPanel.setOpaque(false);
-        TitlePanel.setOpaque(false);
-        ContainPanel.setOpaque(false);
-        TextContainPanel.setOpaque(false);
+        setPanelsOpaque();
+        tools = new GraphicsTools();
+        logic = new SnakeLogic();
         point = new Integer(0);
+    }
 
+    private Color linesColor = Color.white;
+    private SnakeLogic logic;
+    private Integer point;
+    private GraphicsTools tools;
+
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
+    }
+
+    public void writeToFile(String name, int points) throws IOException {
+        FileWriter file = null;
+        try {
+            file = new FileWriter("HighScores.txt", true);
+            file.write(name + " " + points + "\n");
+        } finally {
+            if (file != null) {
+                file.close();
+            }
+        }
     }
 
     @Override
@@ -50,13 +72,21 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-        drawLines(g2d);
+        tools.drawLines(g2d, linesColor);
     }
 
-    private Color linesColor = Color.white;
-    private final int SIZE = 50;
-    SnakeLogic logic = new SnakeLogic();
-    Integer point;
+    public JLabel getLabelPoints() {
+        return LabelPoints;
+    }
+
+    private void setPanelsOpaque() {
+
+        ButtonPanel.setOpaque(false);
+        ButtonContainPanel.setOpaque(false);
+        TitlePanel.setOpaque(false);
+        ContainPanel.setOpaque(false);
+        TextContainPanel.setOpaque(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,7 +110,7 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
         RepeatButton = new javax.swing.JButton();
         MenuButton = new javax.swing.JButton();
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/snake/GameOver.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/GameOver.png"))); // NOI18N
 
         javax.swing.GroupLayout TitlePanelLayout = new javax.swing.GroupLayout(TitlePanel);
         TitlePanel.setLayout(TitlePanelLayout);
@@ -202,7 +232,7 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
     }// </editor-fold>//GEN-END:initComponents
 
     private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
-        // TODO add your handling code here:
+        // 
     }//GEN-LAST:event_NameTextFieldActionPerformed
 
     private void MenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuButtonActionPerformed
@@ -274,30 +304,6 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
         logic.setLevel(levelMP);
     }//GEN-LAST:event_RepeatButtonActionPerformed
 
-    private void drawLines(Graphics2D g2d) {
-        g2d.setColor(linesColor);
-        for (int i = 0; i < 13; i++) {
-            g2d.drawLine(i * SIZE, 0, i * SIZE, 700);
-        }
-        for (int i = 0; i < 15; i++) {
-            g2d.drawLine(0, i * SIZE, 600, i * SIZE);
-        }
-    }
-
-    public void writeToFile(String name, int points) throws IOException {
-        FileWriter file = null;
-        try {
-            file = new FileWriter("HighScores.txt", true);
-            file.write(name + " " + points + "\n");
-        } finally {
-            if (file != null) {
-                file.close();
-
-            }
-        }
-
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonContainPanel;
@@ -313,9 +319,5 @@ public class GameOverPanel extends javax.swing.JPanel implements ActionListener 
     private javax.swing.JPanel TitlePanel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-
-    public JLabel getLabelPoints() {
-        return LabelPoints;
-    }
 
 }

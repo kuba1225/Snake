@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeLogic;
 
 import java.util.Comparator;
-import snake.HighScoresPanel.User;
 
 /**
  *
  * @author Kuba
  */
-public class PointsComparator implements Comparator<HighScoresPanel.User> {
+public class PointsComparator implements Comparator<User> {
 
     @Override
     public int compare(User o1, User o2) {
-        int u1 = o1.points;
-        int u2 = o2.points;
+        int u1 = o1.getPoints();
+        int u2 = o2.getPoints();
 
         if (u1 < u2) {
             return 1;

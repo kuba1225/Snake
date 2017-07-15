@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeLogic;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
-import static snake.SnakePanel.timer;
 
 /**
  *
@@ -168,9 +167,6 @@ public class SnakeLogic implements KeyListener {
                 break;
             case KeyEvent.VK_RIGHT:
                 move = 1;
-                break;
-            case KeyEvent.VK_ENTER:
-                timer.start();
                 break;
         }
     }

@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package snake;
+package snakeGUI;
 
+import snakeLogic.SnakeLogic;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import static snake.MainFrame.frame;
-import static snake.SnakePanel.timer;
+import static snakeGUI.MainFrame.frame;
+import static snakeGUI.SnakePanel.timer;
 
 /**
  *
@@ -24,17 +25,35 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
      */
     public MenuPanel() {
         initComponents();
+        setPanelsOpaque();
+        tools = new GraphicsTools();
+    }
+
+    static int levelMP = 1;
+    static int timerDelay = 350;
+    private GraphicsTools tools;
+    private Color linesColor = Color.white;
+    static Color snakeColorMP = Color.black;
+
+    private void setPanelsOpaque() {
+
         GameNamePanel.setOpaque(false);
         ButtonsParentPanel.setOpaque(false);
         ButtonsPanel.setOpaque(false);
-
     }
 
-    private Color linesColor = Color.white;
-    private final int SIZE = 50;
-    static int timerDelay = 350;
-    static int levelMP = 1;
-    static Color snakeColorMP = Color.black;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        tools.drawLines(g2d, linesColor);
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,7 +63,6 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         GameNamePanel = new javax.swing.JPanel();
         GameNameLabel = new javax.swing.JLabel();
@@ -57,7 +75,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
 
         setPreferredSize(new java.awt.Dimension(600, 700));
 
-        GameNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/snake/SnakeLogo.png"))); // NOI18N
+        GameNameLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/SnakeLogo.png"))); // NOI18N
 
         javax.swing.GroupLayout GameNamePanelLayout = new javax.swing.GroupLayout(GameNamePanel);
         GameNamePanel.setLayout(GameNamePanelLayout);
@@ -205,28 +223,6 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
 
     }//GEN-LAST:event_SettingsButtonActionPerformed
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        repaint();
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-        drawLines(g2d);
-
-    }
-
-    private void drawLines(Graphics2D g2d) {
-        g2d.setColor(linesColor);
-        for (int i = 0; i < 13; i++) {
-            g2d.drawLine(i * SIZE, 0, i * SIZE, 700);
-        }
-        for (int i = 0; i < 15; i++) {
-            g2d.drawLine(0, i * SIZE, 600, i * SIZE);
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonsPanel;
