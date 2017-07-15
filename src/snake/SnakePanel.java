@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import static snake.MainFrame.frame;
 
@@ -26,9 +28,9 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
     public SnakePanel() {
         initComponents();
         logic.initSnake();
-        frame.addKeyListener(logic);
         timer = new Timer(350, this);
         timer.start();
+
     }
 
     SnakeLogic logic = new SnakeLogic();
@@ -37,6 +39,15 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
     private Color backgroundColor = Color.white;
     private Color fruitColor = Color.red;
     private final int SIZE = 50;
+    private Color linesColor = Color.black;
+
+    public Color getSnakeColor() {
+        return snakeColor;
+    }
+
+    public void setSnakeColor(Color snakeColor) {
+        this.snakeColor = snakeColor;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,13 +74,12 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
         int r = logic.getFruitPosition().getR();
         int c = logic.getFruitPosition().getC();
         g2d.setColor(fruitColor);
-        g2d.fillRect(c * SIZE, r * SIZE, SIZE - 2, SIZE - 2);
+        g2d.fillRect(c * SIZE + 2, r * SIZE + 2, SIZE - 3, SIZE - 3);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         logic.updatePosition();
-
         repaint();
     }
 
@@ -78,8 +88,10 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
 
         repaintBackground(g2d);
-        drawSnake(g2d);
 
+        drawSnake(g2d);
+        //g2d.setBackground(linesColor);
+        drawLines(g2d);
         if (logic.isAte()) {
             logic.generateFruit();
             logic.setAte(false);
@@ -94,20 +106,29 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
     }
 
     private void gameOver(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 600, 700);
+        /*g.setColor(Color.WHITE);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.BLACK);
         g.drawString("   GAME OVER!!!", 130, 180);
-        g.drawString("Zdobyłeś "+logic.getPoints()+" punktów!", 130, 280);
+        g.drawString("Zdobyłeś " + logic.getPoints() + " punktów!", 130, 280);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString("Kliknij ,,enter'' aby ", 130, 480);
-        g.drawString("rozpocząć od nowa", 130, 530);
+        g.drawString("rozpocząć od nowa", 130, 530);*/
+        GameOverPanel gameOverPanel = new GameOverPanel();
+
+        gameOverPanel.point = logic.getPoints();
+
+        frame.getContentPane().removeAll();
+        frame.add(gameOverPanel);
+        frame.validate();
+        frame.pack();
+        gameOverPanel.getLabelPoints().setText(logic.getPoints() + " PKT");
+
         logic.getSnake().length = 0;
         logic.getSnake().getPosition().clear();
         logic.initSnake();
         logic.setGameOver(false);
-        logic.setPoints(0);
         timer.stop();
     }
 
@@ -123,7 +144,17 @@ public class SnakePanel extends javax.swing.JPanel implements ActionListener {
         for (int i = 0; i < logic.getSnake().length; i++) {
             r = logic.getSnake().getPosition().get(i).getR();
             c = logic.getSnake().getPosition().get(i).getC();
-            g2d.fillRect(c * SIZE, r * SIZE, SIZE - 2, SIZE - 2);
+            g2d.fillRect(c * SIZE + 2, r * SIZE + 2, SIZE - 3, SIZE - 3);
+        }
+    }
+
+    private void drawLines(Graphics2D g2d) {
+        g2d.setColor(linesColor);
+        for (int i = 0; i < 13; i++) {
+            g2d.drawLine(i * SIZE, 0, i * SIZE, 700);
+        }
+        for (int i = 0; i < 15; i++) {
+            g2d.drawLine(0, i * SIZE, 600, i * SIZE);
         }
     }
 

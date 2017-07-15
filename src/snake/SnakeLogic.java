@@ -18,9 +18,10 @@ public class SnakeLogic implements KeyListener {
 
     private Snake snake;
     private int points = 0;
-    private int move = 2;
+    private static int move = 2;
     private boolean ate = true;
     private boolean gameOver = false;
+    private static int level = 1;
 
     private Position fruitPosition = null;
     private Random rand = new Random();
@@ -65,6 +66,14 @@ public class SnakeLogic implements KeyListener {
         return fruitPosition;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     public void generateFruit() {
         int r = rand.nextInt(14);
         int c = rand.nextInt(12);
@@ -97,6 +106,7 @@ public class SnakeLogic implements KeyListener {
                 break;
             case 1:
                 hc++;
+
                 break;
             case 2:
                 hr++;
@@ -127,11 +137,11 @@ public class SnakeLogic implements KeyListener {
             if (tmp2.equals(fruitPosition)) {
                 Position tmp = new Position(tr, tc);
                 snake.getPosition().add(tmp);
-                points += 10;
+                points += 10 * level;
                 snake.length++;
                 ate = true;
-            }
 
+            }
         } else {
             gameOver = true;
 

@@ -17,15 +17,17 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     static JFrame frame = new JFrame("Snake");
-    private SnakePanel paint = new SnakePanel();
+
+    private MenuPanel menu = new MenuPanel();
 
     public MainFrame() {
         initComponents();
-        frame.add(paint);
+        frame.add(menu);
         frame.pack();
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
     }
 
     /**
@@ -43,11 +45,11 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 700, Short.MAX_VALUE)
         );
 
         pack();
@@ -84,6 +86,7 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MainFrame();
+
             }
         });
     }
